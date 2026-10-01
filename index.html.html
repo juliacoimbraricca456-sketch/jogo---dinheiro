@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jogo de Educação Financeira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{--sky:#b5e0ff;--card:#fff;--ink:#1b2140;--line:#4a6bc4;--mute:#46528a;--coin:#ffd63a;--coin-ink:#4a3000;--ok:#146b1c;--okbg:#d9fbbf;--bad:#9b1c1c;--badbg:#ffe0da;--grass:#3aa31a;--brick:#c8691e;--pri:#3aa31a;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--sky);color:var(--ink);font-family:"Pixelify Sans","Courier New",monospace;font-size:21px;line-height:1.35;font-weight:500}
+.sky{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.cloud{position:absolute;width:12px;height:12px}
+.c1{left:6%;top:14%;box-shadow:24px 0px 0 #ffffff,36px 0px 0 #ffffff,48px 0px 0 #ffffff,60px 0px 0 #ffffff,12px 12px 0 #ffffff,24px 12px 0 #ffffff,36px 12px 0 #ffffff,48px 12px 0 #ffffff,60px 12px 0 #ffffff,72px 12px 0 #ffffff,0px 24px 0 #d9eaff,12px 24px 0 #d9eaff,24px 24px 0 #d9eaff,36px 24px 0 #d9eaff,48px 24px 0 #d9eaff,60px 24px 0 #d9eaff,72px 24px 0 #d9eaff,84px 24px 0 #d9eaff}
+.c2{right:8%;top:34%;width:18px;height:18px;box-shadow:36px 0px 0 #ffffff,54px 0px 0 #ffffff,72px 0px 0 #ffffff,90px 0px 0 #ffffff,18px 18px 0 #ffffff,36px 18px 0 #ffffff,54px 18px 0 #ffffff,72px 18px 0 #ffffff,90px 18px 0 #ffffff,108px 18px 0 #ffffff,0px 36px 0 #d9eaff,18px 36px 0 #d9eaff,36px 36px 0 #d9eaff,54px 36px 0 #d9eaff,72px 36px 0 #d9eaff,90px 36px 0 #d9eaff,108px 36px 0 #d9eaff,126px 36px 0 #d9eaff}
+.c3{left:46%;top:62%;box-shadow:24px 0px 0 #ffffff,36px 0px 0 #ffffff,48px 0px 0 #ffffff,60px 0px 0 #ffffff,12px 12px 0 #ffffff,24px 12px 0 #ffffff,36px 12px 0 #ffffff,48px 12px 0 #ffffff,60px 12px 0 #ffffff,72px 12px 0 #ffffff,0px 24px 0 #d9eaff,12px 24px 0 #d9eaff,24px 24px 0 #d9eaff,36px 24px 0 #d9eaff,48px 24px 0 #d9eaff,60px 24px 0 #d9eaff,72px 24px 0 #d9eaff,84px 24px 0 #d9eaff;opacity:.9}
+.ground{position:fixed;left:0;right:0;bottom:0;height:44px;z-index:0;pointer-events:none;background:linear-gradient(#6fd13a 0 8px,#2f8a14 8px 12px,transparent 12px),radial-gradient(#f0a458 2px,transparent 2.5px) 0 0/16px 16px,#d9822b}
+.pipe{position:fixed;bottom:44px;right:3vw;width:64px;height:76px;z-index:0;pointer-events:none;border:4px solid #17400a;border-bottom:0;background:linear-gradient(90deg,#2a7d12 0 10px,#8be35a 10px 22px,#3aa31a 22px 50px,#1f6a0c 50px)}
+.pipe::before{content:"";position:absolute;left:-12px;right:-12px;top:-4px;height:26px;border:4px solid #17400a;background:linear-gradient(90deg,#2a7d12 0 12px,#8be35a 12px 26px,#3aa31a 26px 58px,#1f6a0c 58px)}
+@media (max-width:760px){.pipe{display:none}}
+main{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:22px 16px 120px}
+h1{font-family:"Press Start 2P","Pixelify Sans",monospace;font-weight:400;font-size:clamp(1.2rem,4.4vw,2rem);line-height:1.5;margin:0 0 10px;color:#fff;text-shadow:4px 4px 0 #3b6fc9}
+h2{font-family:"Press Start 2P","Pixelify Sans",monospace;font-weight:400;font-size:1.05rem;line-height:1.6;margin:0 0 10px}
+p{margin:0 0 10px}
+.sub{color:#1b3a7a;margin-bottom:16px}
+
+.tabs{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;color:inherit}
+button:focus-visible{outline:4px solid #ffd63a;outline-offset:2px}
+.tab{flex:1;min-width:210px;padding:14px;border:4px solid var(--line);background:var(--card);font-weight:700;box-shadow:6px 6px 0 var(--line);color:var(--ink)}
+.tab:active{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--line)}
+.tab[aria-selected="true"]{background:var(--coin);color:var(--coin-ink)}
+.hidden{display:none}
+.wallet{position:sticky;top:env(safe-area-inset-top,0px);z-index:3;display:flex;align-items:center;gap:12px;background:var(--coin);color:var(--coin-ink);padding:10px 18px;border:4px solid var(--line);box-shadow:6px 6px 0 var(--line);margin-bottom:16px;font-weight:700;font-size:1.6rem}
+.coin{display:inline-block;width:22px;height:30px;background:#ffb300;border:4px solid #7a4a00;box-shadow:inset 4px 0 0 #fff2a0;animation:gira 1.2s steps(4) infinite}
+@keyframes gira{50%{transform:scaleX(.35)}}
+.wallet small{font-weight:500;font-size:.8rem;margin-left:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+.item{text-align:left;background:var(--card);color:var(--ink);border:4px solid var(--line);padding:14px;display:flex;flex-direction:column;gap:6px;box-shadow:6px 6px 0 var(--line)}
+.item:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--line)}
+.item .em{font-size:2.6rem;line-height:1;background:#ffb81c;border:4px solid #7a3b00;box-shadow:inset -4px -4px 0 #d98a00,inset 4px 4px 0 #ffd86b;width:76px;height:76px;display:grid;place-items:center}
+.item .price{font-weight:700;color:var(--coin-ink);background:var(--coin);border:3px solid var(--line);align-self:flex-start;padding:0 12px}
+.item[aria-pressed="true"]{background:var(--okbg);border-color:var(--ok);box-shadow:6px 6px 0 var(--ok)}
+.item[aria-pressed="true"]::after{content:"✔ NO CARRINHO!";font-weight:700;color:var(--ok)}
+.item[disabled]{opacity:.45;cursor:not-allowed}
+.item .d{color:var(--mute);font-size:.9rem}
+.btn{background:var(--grass);color:#fff;border:4px solid #17400a;padding:12px 24px;font-weight:700;box-shadow:inset 4px 4px 0 #8be35a,6px 6px 0 #17400a;text-shadow:2px 2px 0 #17400a}
+.btn:active{transform:translate(4px,4px);box-shadow:inset 4px 4px 0 #8be35a,2px 2px 0 #17400a}
+.btn.ghost{background:#fff;color:var(--ink);border-color:var(--line);box-shadow:6px 6px 0 var(--line);text-shadow:none}
+.row{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px}
+.res{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border:4px solid var(--line);margin-bottom:12px;color:var(--ink)}
+.res.good{background:var(--okbg)}.res.bad{background:var(--badbg)}
+.res b{display:block}
+.tag{font-weight:700;white-space:nowrap}
+.good .tag{color:var(--ok)}.bad .tag{color:var(--bad)}
+#resultado{background:var(--card);border:4px solid var(--line);box-shadow:6px 6px 0 var(--line);padding:18px}
+.panel{background:var(--card);border:4px solid var(--line);padding:20px;margin-bottom:14px;box-shadow:8px 8px 0 var(--line)}
+.phone{background:#cfe6ff;color:#1b2140;border:4px solid var(--line);padding:14px;margin:10px 0 18px}
+.from{font-size:.9rem;font-weight:700;margin-bottom:6px}
+.bubble{background:#fff;border:4px solid var(--line);padding:12px 16px}
+.opts{display:grid;gap:14px}
+.opt{padding:16px;border:4px solid var(--line);text-align:left;font-weight:700;color:#fff;box-shadow:6px 6px 0 var(--line);text-shadow:2px 2px 0 rgba(0,0,0,.35)}
+.opt:nth-child(1){background:#e03a2e}.opt:nth-child(2){background:#2f7de1}
+.opt:active{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--line)}
+.opt[disabled]{opacity:.55;cursor:default}
+.fb{padding:16px;margin-top:16px;border:4px solid var(--line);color:var(--ink)}
+.fb.good{background:var(--okbg)}.fb.bad{background:var(--badbg)}
+.fb ul{margin:6px 0 0;padding-left:22px}
+.prog{display:inline-block;background:var(--coin);color:var(--coin-ink);font-weight:700;padding:0 12px;border:3px solid var(--line);margin-bottom:10px;font-size:.9rem}
+.big{font-family:"Press Start 2P","Pixelify Sans",monospace;font-size:2.2rem;color:#e03a2e;margin:8px 0 14px}
+.confete{position:fixed;top:-40px;font-size:2rem;pointer-events:none;z-index:9;animation:cai 2.6s linear forwards}
+@keyframes cai{to{transform:translateY(110vh) rotate(540deg)}}
+@media (prefers-reduced-motion:reduce){.confete{display:none}.coin{animation:none}}
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true"><div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div></div><div class="pipe" aria-hidden="true"></div><div class="ground" aria-hidden="true"></div>
+<main>
+<h1>DINHEIRO NO MUNDO DIGITAL</h1>
+<p class="sub">Escolha uma fase e boa sorte! Depois a gente conversa sobre as escolhas.</p>
+
+<div class="tabs" role="tablist">
+  <button class="tab" role="tab" id="t1" aria-selected="true" aria-controls="loja">🪙 FASE 1: Desafio das moedas</button>
+  <button class="tab" role="tab" id="t2" aria-selected="false" aria-controls="golpe">🕵️ FASE 2: Detetive de golpes</button>
+</div>
+
+<!-- LOJA -->
+<section id="loja">
+  <div class="wallet"><span class="coin"></span><span><span id="saldo">100</span> moedas</span><small>Escolha o que comprar</small></div>
+  <p class="sub">Você tem 100 moedas para o mês. Toque nos itens para comprar ou devolver. Quando decidir, clique em finalizar!</p>
+  <div class="grid" id="grid"></div>
+  <div class="row"><button class="btn" id="fim">Finalizar compras 🎉</button><button class="btn ghost" id="zera">Recomeçar</button></div>
+  <div id="resultado" class="hidden" style="margin-top:22px"></div>
+</section>
+
+<!-- GOLPE -->
+<section id="golpe" class="hidden">
+  <div id="gbox"></div>
+</section>
+</main>
+
+<script>
+function festa(){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;const E=["🪙","⭐","🪙","💰","✨"];for(let i=0;i<26;i++){const e=document.createElement("span");e.className="confete";e.textContent=E[i%5];e.style.left=Math.random()*100+"vw";e.style.animationDelay=Math.random()*.8+"s";document.body.appendChild(e);setTimeout(()=>e.remove(),3600)}}
+/* ---------- ABAS ---------- */
+const tabs=[["t1","loja"],["t2","golpe"]];
+tabs.forEach(([t,s])=>{document.getElementById(t).onclick=()=>{
+  tabs.forEach(([t2,s2])=>{document.getElementById(t2).setAttribute("aria-selected",t2===t);document.getElementById(s2).classList.toggle("hidden",s2!==s)});
+}});
+
+/* ---------- DESAFIO DAS MOEDAS ---------- */
+const ITENS=[
+ {e:"📓",n:"Caderno e canetas",p:15,ok:true,d:"O material acabou e você precisa pra aula.",why:"Necessidade real, comprada com planejamento."},
+ {e:"🐖",n:"Guardar na poupança",p:30,ok:true,d:"Dinheiro separado para imprevistos.",why:"Reserva de emergência. Guardar também é uma decisão financeira boa."},
+ {e:"🎮",n:"Skin rara de jogo",p:40,ok:false,d:"Só fica disponível hoje!",why:"Compra por impulso e por pressão de tempo. Dura pouco e não volta."},
+ {e:"🎧",n:"Fone em “oferta imperdível”",p:25,ok:false,d:"De 80 por 25! Só 2 unidades.",why:"Falsa escassez. Antes de comprar, pesquise o preço e a loja."},
+ {e:"📚",n:"Curso online de inglês",p:25,ok:true,d:"Você vai usar toda semana.",why:"Investimento em você mesmo, com retorno no futuro."},
+ {e:"👟",n:"Tênis da moda",p:45,ok:false,d:"Você já tem um tênis bom, mas todo mundo tem.",why:"Compra por pressão social. Querer é normal, mas vale esperar e comparar."},
+ {e:"🎁",n:"Presente de aniversário do amigo",p:10,ok:true,d:"Algo simples e que ele vai gostar.",why:"Gasto planejado e de baixo valor, que fortalece a amizade."},
+ {e:"📦",n:"Caixa misteriosa",p:10,ok:false,d:"Pode vir um prêmio incrível!",why:"É jogo de sorte. Você paga sem saber o que leva e quase sempre perde."},
+ {e:"📺",n:"Assinatura de streaming extra",p:12,ok:false,d:"Você já tem outras e quase não usa.",why:"Gasto recorrente que pesa todo mês sem uso real."}
+];
+const TOTAL=100;let sel=new Set();
+const grid=document.getElementById("grid"),saldoEl=document.getElementById("saldo"),res=document.getElementById("resultado");
+const gasto=()=>[...sel].reduce((s,i)=>s+ITENS[i].p,0);
+function desenha(){
+  const saldo=TOTAL-gasto();saldoEl.textContent=saldo;
+  grid.innerHTML="";
+  ITENS.forEach((it,i)=>{
+    const b=document.createElement("button");b.className="item";
+    const on=sel.has(i);b.setAttribute("aria-pressed",on);
+    b.disabled=!on&&it.p>saldo;
+    b.innerHTML=`<span class="em">${it.e}</span><strong>${it.n}</strong><span class="d">${it.d}</span><span class="price">🪙 ${it.p}</span>`;
+    b.onclick=()=>{on?sel.delete(i):sel.add(i);res.classList.add("hidden");desenha()};
+    grid.appendChild(b);
+  });
+}
+document.getElementById("zera").onclick=()=>{sel.clear();res.classList.add("hidden");desenha()};
+document.getElementById("fim").onclick=()=>{
+  const saldo=TOTAL-gasto();
+  const comp=[...sel].map(i=>ITENS[i]);
+  const bons=comp.filter(c=>c.ok).length,ruins=comp.length-bons;
+  let h=`<h2>Resultado</h2><p>Você terminou com <b>🪙 ${saldo}</b> moedas. ${bons} compra(s) boa(s) e ${ruins} compra(s) por impulso.</p>`;
+  if(!comp.length)h+=`<p>Você não comprou nada. Não gastar também é uma escolha, mas lembre que algumas coisas eram necessárias.</p>`;
+  comp.forEach(c=>{h+=`<div class="res ${c.ok?"good":"bad"}"><span class="tag">${c.ok?"✔ Boa":"✖ Cuidado"}</span><div><b>${c.e} ${c.n}</b>${c.why}</div></div>`});
+  const nao=ITENS.filter((_,i)=>!sel.has(i));
+  if(nao.length){h+=`<h2 style="margin-top:18px">O que ficou de fora</h2>`;
+    nao.forEach(c=>{h+=`<div class="res ${c.ok?"good":"bad"}"><span class="tag">${c.ok?"Faltou":"Boa escolha"}</span><div><b>${c.e} ${c.n}</b>${c.ok?"Era uma boa compra: ":"Você evitou: "}${c.why}</div></div>`})}
+  res.innerHTML=h;res.classList.remove("hidden");if(comp.length&&!ruins)festa();res.scrollIntoView({behavior:"smooth",block:"start"});
+};
+desenha();
+
+/* ---------- SIMULADOR DE GOLPE ---------- */
+const CENAS=[
+ {de:"Mãe (número novo)",txt:"Oi filho, troquei de número e meu app do banco tá bloqueado. Consegue pagar um boleto de R$ 480 pra mim agora? Te devolvo hoje!",
+  cai:"Fazer o Pix agora, é minha mãe!",ok:"Ligar para o número antigo da minha mãe",
+  sinais:["Número desconhecido dizendo ser alguém da família","Pede dinheiro com urgência","Pede para você agir antes de confirmar"],
+  dica:"Sempre confirme por ligação ou com outra pessoa da família antes de enviar dinheiro."},
+ {de:"Site: diamantes-gratis-ff.net",txt:"🎉 Você foi sorteado! 10.000 diamantes grátis. Entre com seu login e senha para resgatar em 2 minutos!",
+  cai:"Entrar com login e senha",ok:"Fechar e olhar no site oficial do jogo",
+  sinais:["Prêmio de sorteio que você nunca participou","Endereço do site estranho","Pede sua senha","Prazo curto para pressionar"],
+  dica:"Nenhum jogo pede sua senha em site de terceiros. Quem tem sua senha tem sua conta."},
+ {de:"SMS: BANCO-SEGURO",txt:"Sua conta será BLOQUEADA hoje. Atualize seus dados agora: bit.ly/banc0-seg",
+  cai:"Clicar no link e atualizar",ok:"Abrir o app do banco por conta própria",
+  sinais:["Ameaça de bloqueio","Link encurtado e com nome escrito errado","Mensagem de remetente genérico"],
+  dica:"Banco não manda link por SMS pedindo dados. Abra sempre o app oficial."},
+ {de:"Vaga de trabalho (WhatsApp)",txt:"Ganhe R$ 300 por dia só curtindo vídeos! Para liberar seu cadastro, pague uma taxa de R$ 30.",
+  cai:"Pagar a taxa de R$ 30",ok:"Pesquisar a empresa e recusar",
+  sinais:["Ganho alto por tarefa muito fácil","Cobra para você começar a trabalhar","Contato por mensagem sem empresa conhecida"],
+  dica:"Emprego de verdade não cobra para contratar. Se promete muito e pede dinheiro antes, desconfie."}
+];
+const gbox=document.getElementById("gbox");
+let gi=0,quedas=0;
+function ordem(c){return Math.random()<.5?[["cai",c.cai],["ok",c.ok]]:[["ok",c.ok],["cai",c.cai]]}
+function cena(){
+  if(gi>=CENAS.length)return fim();
+  const c=CENAS[gi],o=ordem(c);
+  gbox.innerHTML=`<div class="panel"><div class="prog">Situação ${gi+1} de ${CENAS.length}</div>
+  <h2>O que você faz?</h2>
+  <div class="phone"><div class="from">${c.de}</div><div class="bubble">${c.txt}</div></div>
+  <div class="opts">${o.map(([k,t])=>`<button class="opt" data-k="${k}">${t}</button>`).join("")}</div>
+  <div id="fb"></div></div>`;
+  gbox.querySelectorAll(".opt").forEach(b=>b.onclick=()=>resp(b.dataset.k));
+}
+function resp(k){
+  const c=CENAS[gi],caiu=k==="cai";if(caiu)quedas++;else festa();
+  gbox.querySelectorAll(".opt").forEach(b=>b.disabled=true);
+  document.getElementById("fb").innerHTML=`<div class="fb ${caiu?"bad":"good"}"><b>${caiu?"Ops, você caiu no golpe! 😬":"Boa! Você desconfiou! 🕵️"}</b>
+  <p style="margin-top:6px">Sinais de alerta:</p><ul>${c.sinais.map(s=>`<li>${s}</li>`).join("")}</ul><p style="margin-top:10px"><b>Dica:</b> ${c.dica}</p>
+  <div class="row"><button class="btn" id="prox">${gi===CENAS.length-1?"Ver resultado":"Próxima situação"}</button></div></div>`;
+  document.getElementById("prox").onclick=()=>{gi++;cena()};
+  document.getElementById("fb").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function fim(){
+  const n=CENAS.length,ac=n-quedas;
+  gbox.innerHTML=`<div class="panel"><h2>Resultado 🏆</h2><div class="big">${ac} de ${n}</div>
+  <p>${quedas===0?"Você não caiu em nenhum golpe. Os golpistas contam com a pressa e a emoção, e você não deu isso a eles.":`Você caiu em ${quedas} situação(ões). Golpistas são bons em criar urgência e emoção, e isso pode acontecer com qualquer pessoa.`}</p>
+  <p><b>Regra de ouro:</b> parou, respirou, confirmou por outro canal. Se tem pressa demais, é golpe.</p>
+  <div class="row"><button class="btn" id="again">Jogar de novo</button></div></div>`;
+  document.getElementById("again").onclick=()=>{gi=0;quedas=0;cena()};
+}
+cena();
+</script>
+</body>
+</html>
